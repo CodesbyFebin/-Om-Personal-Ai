@@ -1,108 +1,155 @@
-# vinext-starter
+<div align="center">
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+# 🕉 OM — Personal AI Operating Universe
 
-## Prerequisites
+**A sovereign, self-hostable AI workspace for private agents, local model routing, durable knowledge and auditable execution.**
 
-- Node.js `>=22.13.0`
-- Linux with `flock`, `curl`, and GNU `timeout`
+[![License: MIT](https://img.shields.io/badge/License-MIT-6b7cff.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-16-111827?logo=nextdotjs)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Cloudflare](https://img.shields.io/badge/Cloudflare-D1%20%2B%20Workers-f38020?logo=cloudflare&logoColor=white)](https://www.cloudflare.com/)
+[![Self-hostable](https://img.shields.io/badge/Self--hostable-yes-16a34a)](#self-hosting)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-8b5cf6)](CONTRIBUTING.md)
 
-## Sites Lifecycle
+[Live workspace](https://personal-ai-codex.cyberteckmaster.chatgpt.site) · [Self-hosting](#self-hosting) · [Architecture](#architecture) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
-The Sites lifecycle CLI runs the locked dependency install before returning this checkout. Edit the source under `app/`, then checkpoint when a coherent milestone is ready to inspect or share. The remote Sites builder runs `npm run build` against the pushed commit. Do not repeat install or build as a normal pre-checkpoint step.
+</div>
 
-This starter does not use `wrangler.jsonc`.
+## What is OM?
 
-`install:ci` is intentionally a single, non-retrying `npm ci`. It refuses a concurrent install for the same project, consumes a matching image-seeded npm cache with `--prefer-offline` while retaining registry fallback for a missing cache object, otherwise downloads and verifies the complete vinext tarball recorded in `package-lock.json`, limits npm to one socket, and terminates a stalled install. `build` applies a short timeout and then validates the Sites artifact. These helpers target Linux and use GNU `timeout`; they are not native macOS scripts.
+OM is an open-source personal AI operating universe: one interface for missions, agents, notes, prompts, findings, local AI configuration and measured infrastructure health. It is designed for people who want an AI workspace they can inspect, operate and progressively move onto infrastructure they own.
 
-Scripts that need writable project-scoped home, npm, XDG, and temporary paths use `scripts/sites-env.sh`. The `dev` and `start` scripts honor the caller's runtime environment and keep Wrangler logs inside the checkout. The generated `.sites-runtime/` directory is disposable and ignored by Git.
+OM is not presented as a fully autonomous production runtime. The interface distinguishes implemented workspace capabilities from external services that still require configuration, credentials or owned infrastructure.
 
-## Included Shape
+## Why OM?
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+- **Sovereign by design** — self-hostable application with explicit private-service boundaries.
+- **Local-model ready** — configuration surfaces for Ollama and compatible model routers.
+- **Durable knowledge** — D1/Drizzle-backed records for workspace data.
+- **Measured status** — offline and setup-required services are shown honestly.
+- **Auditable direction** — production-readiness milestones and verification criteria are built into the product.
+- **One workspace** — command center, Kanban, projects, notes, prompts, findings and integrations.
 
-## Workspace Auth Headers
+## Current capabilities
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+| Area | Available now | Requires external setup |
+|---|---|---|
+| Workspace | Command Center, feature vault, Kanban, projects, notes, findings, prompt vault | — |
+| Identity | Optional Sign in with ChatGPT helpers and hosting access policy | Provider configuration |
+| Persistence | Cloudflare D1 + Drizzle schema/migrations | D1 binding for deployment |
+| AI | UI and configuration surfaces | Ollama/vLLM or opted-in cloud provider |
+| Memory | Knowledge records and readiness model | Qdrant for semantic retrieval |
+| Storage | Storage setup and health surfaces | MinIO/S3-compatible endpoint |
+| Execution | Mission and approval UX | Owned sandbox/edge worker |
+| Private network | Status and setup surfaces | Tor/WireGuard infrastructure |
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+## Architecture
 
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```text
+Web / Desktop UI
+  └─ Authenticated OM application
+     ├─ D1 / SQL · workspace records
+     ├─ Model router · Ollama / vLLM / opt-in cloud
+     ├─ Vector memory · Qdrant
+     ├─ Object storage · MinIO / S3
+     └─ Sandbox worker · owned edge node
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+The repository currently uses Next.js 16, React 19, TypeScript, Vinext/Vite, Cloudflare Worker primitives, D1 and Drizzle ORM.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+## Quick start
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+### Requirements
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+- Node.js 22.13 or newer
+- npm
+- Linux, WSL2 or a compatible environment with `bash`, `flock` and GNU `timeout`
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+### Install and run
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+```bash
+git clone https://github.com/CodesbyFebin/-Om-Personal-Ai.git
+cd ./-Om-Personal-Ai
+npm ci
+npm run dev
+```
 
-## Diagnostic Commands
+Open the local URL printed by the development server.
 
-- `npm run install:ci`: perform the one bounded lockfile install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build and validate the deployable Sites artifact
-- `npm run start`: start the built Vinext application
-- `npm test`: build, validate, and verify the rendered development-preview metadata
-- `npm run validate:artifact`: recheck an existing artifact's manifest and ESM `default.fetch` export
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+### Validate
 
-Use build and validation commands for targeted diagnosis after a remote failure, not as part of the normal checkpoint path.
+```bash
+npm run lint
+npm test
+```
 
-The timeout defaults can be overridden for a controlled canary with `SITES_INSTALL_TIMEOUT`, `SITES_INSTALL_KILL_AFTER`, `SITES_BUILD_TIMEOUT`, and `SITES_BUILD_KILL_AFTER`. A timeout fails the command; the helpers never retry an unchanged install or build.
+## Self-hosting
 
-## Learn More
+OM can be adapted for Cloudflare/Sites hosting or an owned deployment. A complete sovereign runtime additionally needs:
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+1. An authenticated model endpoint such as Ollama or vLLM.
+2. Qdrant for semantic memory.
+3. MinIO or another S3-compatible object store.
+4. A sandboxed worker for agent execution.
+5. Secret storage, rotation, backups and restore testing.
+6. TLS, network policy and production monitoring.
+
+Never commit secrets. Copy documented keys into a local `.env` that is excluded by `.gitignore`, or use your deployment platform's encrypted environment-variable store.
+
+## Repository map
+
+```text
+app/        Application routes and UI
+db/         D1 access and schema
+drizzle/    Database migrations
+public/     Public assets
+scripts/    Reproducible install/build validation
+selfhost/   Self-hosting resources
+tests/      Rendered-output and build tests
+worker/     Worker-side services
+```
+
+## Frequently asked questions
+
+### Can OM run local LLMs?
+
+OM includes configuration and status surfaces for local model routing. Actual inference requires a reachable Ollama, vLLM or compatible endpoint that you operate.
+
+### Is OM fully private by default?
+
+The application is designed for private deployment, but privacy depends on your hosting, model providers, connectors and network configuration. Cloud integrations should be explicit opt-ins.
+
+### Does OM execute autonomous agents today?
+
+The product includes mission, approval and activity interfaces. Secure autonomous execution requires an owned sandbox worker and must not be inferred from UI simulation alone.
+
+### What makes OM different from a chatbot?
+
+OM combines AI interaction with project operations, persistent knowledge, infrastructure health, approvals and a roadmap toward verifiable self-hosted execution.
+
+## Roadmap
+
+- Owned local/cloud model router with streaming and circuit breakers
+- Hybrid SQL + Qdrant memory with citations
+- Durable mission queue, leases and idempotent transitions
+- Rootless sandbox execution on owned edge nodes
+- Encrypted connector credentials and rotation
+- Backup/restore and multi-user isolation tests
+
+Progress should be accepted only with evidence from real services and tests.
+
+## Contributing
+
+Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before proposing a change. Security reports belong in the private channel described in [SECURITY.md](SECURITY.md).
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## Citation and discovery
+
+For AI assistants and research tools, a concise project fact sheet is available in [llms.txt](llms.txt). When describing OM, preserve the distinction between shipped application features and infrastructure that requires configuration.
+
+---
+
+Built by [CodesbyFebin](https://github.com/CodesbyFebin) for a more inspectable, owner-controlled AI future.

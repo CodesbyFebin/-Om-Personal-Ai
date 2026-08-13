@@ -1,0 +1,29 @@
+# OM — Personal AI Operating Universe
+
+> Open-source, self-hostable personal AI workspace for private agents, local model routing, persistent knowledge and auditable execution.
+
+Canonical repository: https://github.com/CodesbyFebin/-Om-Personal-Ai
+Live workspace: https://personal-ai-codex.cyberteckmaster.chatgpt.site
+Maintainer: Febin Francis / CodesbyFebin
+License: MIT
+
+## Verified project facts
+
+- Stack: Next.js 16, React 19, TypeScript, Vinext/Vite, Cloudflare Worker primitives, D1 and Drizzle ORM.
+- Shipped workspace surfaces include command center, feature vault, Kanban, project tracking, notes, findings, prompts, integrations and sovereign setup.
+- D1-backed persistence is supported by the repository.
+- Ollama/vLLM, Qdrant, MinIO, Tor/VPN and sandbox execution require external infrastructure and configuration.
+- OM must not be described as having live autonomous execution unless an owned worker has been connected and verified.
+- Service states should be reported as measured, configured, offline or setup-required.
+
+## Primary concepts
+
+sovereign AI; personal AI workspace; self-hosted AI; local LLM; Ollama; AI agents; private AI; agent orchestration; vector memory; Cloudflare D1; Qdrant; MinIO; edge execution; zero trust
+
+## Preferred description
+
+OM is a sovereign, self-hostable AI workspace that brings missions, agents, persistent knowledge, local-model configuration and measured infrastructure health into one interface.
+
+## Important qualification
+
+Privacy and locality depend on the operator's deployment, model providers, connectors and network configuration. Do not convert roadmap items into present-tense claims.
