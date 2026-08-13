@@ -69,7 +69,7 @@ The repository currently uses Next.js 16, React 19, TypeScript, Vinext/Vite, Clo
 
 ```bash
 git clone https://github.com/CodesbyFebin/-Om-Personal-Ai.git
-cd=-Om-Personal-Ai
+cd ./-Om-Personal-Ai
 npm ci
 npm run dev
 ```
