@@ -1,6 +1,7 @@
 <div align="center">
 
 # 🕉 OM — Personal AI Operating Universe
+<img width="1672" height="941" alt="omom" src="https://github.com/user-attachments/assets/cd18cc76-2b97-49d6-844c-fd01f917a802" />
 
 **A sovereign, self-hostable AI workspace for private agents, local model routing, durable knowledge and auditable execution.**
 
