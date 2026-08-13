@@ -1,7 +1,8 @@
 import { drizzle } from "drizzle-orm/d1";
 import * as schema from "./schema";
 
-declare global { var __OM_D1__: D1Database | undefined; }
+type D1Binding = Parameters<typeof drizzle>[0];
+declare global { var __OM_D1__: D1Binding | undefined; }
 
 export function getDb() {
   if (!globalThis.__OM_D1__) {
