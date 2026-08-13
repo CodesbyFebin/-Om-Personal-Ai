@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use OM, please cite this repository."
+title: "OM — Personal AI Operating Universe"
+type: software
+authors:
+  - family-names: "Francis"
+    given-names: "Febin"
+repository-code: "https://github.com/CodesbyFebin/-Om-Personal-Ai"
+url: "https://personal-ai-codex.cyberteckmaster.chatgpt.site"
+license: MIT
+version: 0.1.0
+date-released: 2026-08-13
+keywords:
+  - sovereign AI
+  - personal AI
+  - self-hosted AI
+  - local LLM
+  - AI agents
