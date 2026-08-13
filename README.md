@@ -1,7 +1,7 @@
 <div align="center">
 
 # 🕉 OM — Personal AI Operating Universe
-<img width="1672" height="941" alt="omom" src="https://github.com/user-attachments/assets/cd18cc76-2b97-49d6-844c-fd01f917a802" />
+<img width="1730" height="909" alt="omsreeee" src="https://github.com/user-attachments/assets/99bb8695-f0f7-4940-97a8-7d3640ac68ca" />
 
 **A sovereign, self-hostable AI workspace for private agents, local model routing, durable knowledge and auditable execution.**
 
@@ -59,6 +59,7 @@ Web / Desktop UI
 The repository currently uses Next.js 16, React 19, TypeScript, Vinext/Vite, Cloudflare Worker primitives, D1 and Drizzle ORM.
 
 ## Quick start
+<img width="1194" height="669" alt="omiui" src="https://github.com/user-attachments/assets/75e3e452-181a-4062-bbb3-4f0675c7ec4c" />
 
 ### Requirements
 
@@ -96,6 +97,9 @@ OM can be adapted for Cloudflare/Sites hosting or an owned deployment. A complet
 6. TLS, network policy and production monitoring.
 
 Never commit secrets. Copy documented keys into a local `.env` that is excluded by `.gitignore`, or use your deployment platform's encrypted environment-variable store.
+<img width="1194" height="669" alt="omiui" src="https://github.com/user-attachments/assets/c797bd6e-df41-4370-ac27-617c2c01af27" />
+<img width="1136" height="668" alt="omscree" src="https://github.com/user-attachments/assets/0ff32800-09d7-4959-8fb9-84179f89c432" />
+<img width="1730" height="909" alt="om hero" src="https://github.com/user-attachments/assets/be56941b-75f5-49f7-af43-31a6fae89afa" />
 
 ## Repository map
 
